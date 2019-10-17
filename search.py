@@ -50,12 +50,10 @@ def trim(string):
 def get_html(url):
     pool = Pool()
     proxies = pool.pool()
-    keys = list(proxies.keys())
-    proxy = keys[random.randrange(0, len(keys))]
     headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
     while True:
         try:
-            req=requests.get(url,headers=headers, proxies = proxies[proxy], timeout=5)
+            req=requests.get(url,headers=headers, proxies = proxies, timeout=5)
             req.encoding='UTF-8'
             return html_str_util.filter_tags(req.text) 
         except requests.exceptions.RequestException:

@@ -18,20 +18,34 @@ def search(filter):
     html = get_html(search_url+'?keyword='+filter)
     bs = BeautifulSoup(html, 'lxml')
     divs = bs.find_all('div', class_ = 'result-item')
+    result_json = '{'
     for div in divs:
-        get_item(div)
-        for child in div.descendants:
-            if child.name == 'img':
-
-            print(child)
+        result_json = result_json + get_item(div) + ','
+    result_json = result_json + '}'
+    print(result_json)
+#parse the result item,which has fiction's info
 def get_item(item):
-    item_str = '' 
+    item_str = '[' 
     for child in item.descendants:
         if child.name == 'img':
-            item_str = item_str+'\"image\":'+child.get('src')+','
-        if child.name == 'a':
-            item_str = item_str+'\"url\":' + child.get('href')+','
+            item_str = item_str+'\"image\":\"'+child.get('src')+'\",'
+        if child.name == 'a' and child.has_attr('title'):
+            item_str = item_str+'\"url\":\"' + child.get('href')+'\",'+'\"title\":\"'+child.get('title')+'\",'
+        if child.name == 'p' and child.has_attr('class') and 'result-game-item-desc' in child['class']:
+            item_str = item_str + '\"intro\":\"' + child.get_text() + '\",'
+        if child.name == 'p' and child.has_attr('class') and 'result-game-item-info-tag' in child['class']:
+            item_str = item_str + '\"author\":\"' + trim(child.get_text()) + '\"'
+            break
+    item_str = item_str + ']'
+    return item_str
 
+def trim(string):
+    string = string.replace('\n', '')
+    string = string.replace('\r', '')
+    string = string.strip()
+    string = string.replace(' ', '')
+    string = string.replace('作者：' ,'')
+    return string
 #get html string
 def get_html(url):
     pool = Pool()

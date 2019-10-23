@@ -44,7 +44,7 @@ def get_item(item):
             item_str = item_str+'\"image\":\"'+child.get('src')+'\",'
             image = child.get('src')
         if child.name == 'a' and child.has_attr('title'):
-            item_str = item_str+'\"url\":\"' + child.get('href')+'\",'+'\"name\":\"'+child.get('title')+'\",'
+            item_str = item_str+'\"url\":\"' + child.get('href')+'\",'+'\"name\":\"'+child.get('title')+'\",\"currenturl\":\"' + child.get('href')+'\",'
             url = child.get('href')
             name = child.get('title')
         if child.name == 'p' and child.has_attr('class') and 'result-game-item-desc' in child['class']:
@@ -55,7 +55,7 @@ def get_item(item):
             author = trim(child.get_text())
             break
     item_str = item_str + ']'
-    fictions.append((name,intro,url,image,author,num,create_date,updating))
+    fictions.append((name,intro,url,image,author,num,create_date,updating,url))
     return item_str
 #create a new thread to write data
 def write_db_task(fictions_list):
@@ -66,7 +66,7 @@ def write_db_task(fictions_list):
 #write data to database
 def write_db(fictions_list):
     db = pymysql.connect(conf.mysql_host, conf.mysql_user, conf.mysql_password, conf.mysql_db)
-    insert_sql = "insert into fiction(name,intro,url,image,author,num,create_date,updating) values(%s,%s,%s,%s,%s,%s,%s,%s);"
+    insert_sql = "insert into fiction(name,intro,url,image,author,num,create_date,updating,currenturl) values(%s,%s,%s,%s,%s,%s,%s,%s,%s);"
     select_sql = "select count(url) from fiction where url = %s;"
     cursor = db.cursor()
     try:
@@ -74,7 +74,7 @@ def write_db(fictions_list):
             cursor.execute(select_sql,(pymysql.escape_string(fiction[2])))
             result = cursor.fetchone()
             if result[0] == 0:
-                cursor.execute(insert_sql,(pymysql.escape_string(fiction[0]),pymysql.escape_string(fiction[1]),pymysql.escape_string(fiction[2]),pymysql.escape_string(fiction[3]),pymysql.escape_string(fiction[4]),fiction[5],pymysql.escape_string(fiction[6]),fiction[7]))
+                cursor.execute(insert_sql,(pymysql.escape_string(fiction[0]),pymysql.escape_string(fiction[1]),pymysql.escape_string(fiction[2]),pymysql.escape_string(fiction[3]),pymysql.escape_string(fiction[4]),fiction[5],pymysql.escape_string(fiction[6]),fiction[7],pymysql.escape_string(fiction[8])))
         db.commit()
     except:
         db.rollback()

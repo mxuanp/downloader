@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+#@author xuan
+#@created 2019/10/23
+#@desciption get proxy pool from https://www.kuaidaili.com/free/inha/
+
+
 import requests
 import re
 from bs4 import BeautifulSoup

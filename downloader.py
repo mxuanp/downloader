@@ -62,9 +62,9 @@ class downloader:
                 title = bs.title
                 content = bs.find(id='content')
                 self.write_chapter(title.get_text(),content.get_text())
-                self.logger.info(str(self.fiction_id) + ':succesful when download ' + title.get_text())
+                self.logger.info('fiction_id:' + str(self.fiction_id) + ':succesful when download ' + title.get_text())
         except Exception as e:
-            self.logger.error(str(self.fiction_id) + ':error when downloading '+currenturl, exc_info = True)
+            self.logger.error('fiction_id:' + str(self.fiction_id) + ':error when downloading '+currenturl, exc_info = True)
            
     #将章节内容写到文件
     def write_chapter(self,title,content):
@@ -90,4 +90,4 @@ class downloader:
         with open(self.path+'/'+'list.json','w',encoding='utf-8') as f:
             json.dump(fiction_list, f, ensure_ascii=False)
         #记录这一次的列表更新
-        self.logger.info(str(self.fiction_id) + ":write list succesful")
+        self.logger.info('fiction_id:' + str(self.fiction_id) + ":write list succesful")

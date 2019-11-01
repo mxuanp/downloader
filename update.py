@@ -114,7 +114,7 @@ def update_all_fictions():
 #create a scheduled task, which runs once a minute
 def start_minute_task():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update_new_fiction, 'interval', seconds = 60)
+    scheduler.add_job(update_new_fictions, 'interval', seconds = 60)
     scheduler.start()
 
 #create a scheduled task, which runs once a day
@@ -128,7 +128,6 @@ def start():
     start_day_task()
 
 if __name__ == '__main__':
-    update_new_fictions()
     try:
         start()
         while True:

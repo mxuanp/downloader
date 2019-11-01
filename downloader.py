@@ -55,7 +55,7 @@ class downloader:
         currenturl = ''
         try:
             for url in self.url_list:
-                time.sleep(2000)
+                time.sleep(2)
                 currenturl = url 
                 html = http_util.get_html(url)
                 bs = BeautifulSoup(html, 'lxml')

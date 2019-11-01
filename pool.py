@@ -51,6 +51,10 @@ class Pool:
         return pool
 
     def pool(self):   
-        pool = self.get_pool(self.bs_preprocess(self.get_html('https://www.kuaidaili.com/free/inha/')))
-        return pool
+        try:
+            while True:
+                pool = self.get_pool(self.bs_preprocess(self.get_html('https://www.kuaidaili.com/free/inha/')))
+                return pool
+        except:
+            pass
 

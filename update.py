@@ -34,6 +34,7 @@ def close_db(db,cursor):
 
 #下载或更新小说
 def update_fictions(fiction_list):
+    logger = utils.get_logger(log_file = conf.update_log_file, logging_name = 'update_logger')
     for fiction in fiction_list:
         #print(fiction)
         path = conf.fiction_dir + str(fiction[0])
@@ -50,10 +51,10 @@ def update_fictions(fiction_list):
             cursor.execute(sql, (str(fiction[0])))
             db.commit()
         except Exception as e:
-            logger = utils.get_logger(log_file = conf.update_log_file, logging_name = 'update_logger')
             logger.error("database error, and rollback", exc_info = True)
             db.rollback()
         close_db(db, cursor)
+        logger.info("downloading fiction id:"+str(fiction[0])+",url:"+fiction[1])
         dl = downloader(url = fiction[1], num = fiction[2], path = path, fiction_id = fiction[0])
         num = dl.update()
         try:
@@ -62,7 +63,6 @@ def update_fictions(fiction_list):
             cursor.execute(sql, (num, fiction[0]))
             db.commit()
         except Exception as e:
-            logger = utils.get_logger(log_file = conf.update_log_file, logging_name = 'update_logger')
             logger.error("database error, and rollback", exc_info = True)
             db.rollback()
         close_db(db, cursor)

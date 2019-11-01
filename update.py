@@ -21,6 +21,7 @@ import utils
 #配置数据库连接池
 db_connectoin_pool = PooledDB(MySQLdb, 5, host=conf.mysql_host, user = conf.mysql_user, passwd = conf.mysql_password, db = conf.mysql_db, port = 3306)
 
+logger = utils.get_logger(log_file = conf.update_log_file, logging_name = 'update_logger')
 #get a database connection
 def get_db():
     db = db_connectoin_pool.connection()
@@ -34,7 +35,6 @@ def close_db(db,cursor):
 
 #下载或更新小说
 def update_fictions(fiction_list):
-    logger = utils.get_logger(log_file = conf.update_log_file, logging_name = 'update_logger')
     for fiction in fiction_list:
         #print(fiction)
         path = conf.fiction_dir + str(fiction[0])
@@ -89,6 +89,7 @@ def update_new_fictions():
     cf.set('fiction', options[0], str(last_fiction_id))
     with open('config.conf','w') as f:
         cf.write(f)
+    logger.info('update new fictions')
     #关闭数据库连接
     close_db(db, cursor)
     #下载小说
@@ -104,6 +105,7 @@ def update_all_fictions():
     for row in results:
         if row[3] == 0:
             fiction_list.append(row)
+    logger.info("update all fictions")
     #关闭数据库连接
     close_db(db, cursor)
     #下载小说

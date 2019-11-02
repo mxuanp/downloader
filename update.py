@@ -66,8 +66,8 @@ def update_fictions(fiction_list):
         try:
             db, cursor = get_db()
             #更新小说状态，以免其它任务重复下载
-            sql = 'update fiction set updating = 1 where id = %s'
-            cursor.execute(sql, (str(fiction[0])))
+            sql = 'update fiction set updating = 1 where id = %s' % fiction[0]
+            cursor.execute(sql)
             db.commit()
         except Exception as e:
             logger.error("database error, and rollback", exc_info = True)

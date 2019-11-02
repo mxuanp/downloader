@@ -33,7 +33,7 @@ proxies = {}
 
 #获取logging的handler
 def get_handler(log_file_name):
-    handler = logging.FileHandler(log_file,encoding = 'UTF-8')
+    handler = logging.FileHandler(log_file_name,encoding = 'UTF-8')
     handler.setLevel(logging.INFO)
     formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formater)

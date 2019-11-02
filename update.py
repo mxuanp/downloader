@@ -98,8 +98,8 @@ def update_new_fictions():
     last_fiction = cf.getint('fiction', options[0])
     fiction_list = []
     db, cursor = get_db()
-    sql = "select id,url,num,updating from fiction where id > %s order by id";
-    cursor.execute(sql, str(last_fiction))
+    sql = "select id,url,num,updating from fiction where id > %s order by id" % last_fiction
+    cursor.execute(sql)
     results = cursor.fetchall()
     last_fiction_id = last_fiction
     for row in results:

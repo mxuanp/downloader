@@ -19,8 +19,6 @@ class Pool:
         return req.text
 
 
-
-
     def bs_preprocess(self,html):
         pat = re.compile('(^[\s]+)|([\s]+$)', re.MULTILINE)
         html = re.sub(pat, '', html)

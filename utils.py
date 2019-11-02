@@ -15,4 +15,7 @@ def get_logger(log_file,logging_name):
     formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formater)
     logger.addHandler(handler)
-    return logger
+    return logger,handler
+
+def close_logger(logger,handler):
+    logger.removeHandler(handler)

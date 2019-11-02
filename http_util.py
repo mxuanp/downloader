@@ -9,14 +9,10 @@ import requests
 
 #my lib
 import html_str_util
-from pool import Pool
-
-
 
 #get html string
-def get_html(url):
-    pool = Pool()
-    proxies = pool.pool()
+def get_html(url,proxies):
+    proxies =proxies 
     headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
     while True:
         try:
@@ -25,5 +21,3 @@ def get_html(url):
             return html_str_util.filter_tags(req.text) 
         except requests.exceptions.RequestException:
             pass
-
-

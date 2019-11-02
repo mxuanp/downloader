@@ -16,24 +16,23 @@ import random
 
 #my lib
 import http_util
-import utils
 import conf
 
 #class downloader
 class downloader:
     #初始化下载器
-    def __init__(self, url, num, path, fiction_id):
+    def __init__(self, url, num, path, fiction_id, logger, proxies):
         self.url = url #小说的地址
         self.num = num #该小说已下载的章节数
         self.path = path #该小说在磁盘的存储地址
         self.fiction_id = fiction_id #该小说在数据库中的id
         self.url_list = [] #用于存储需要更新的章节的url
         self.fic_list = collections.OrderedDict() #用于存储更新的章节的列表
-        log_file = conf.log_dir + str(fiction_id) + '.log'
-        self.logger = utils.get_logger(log_file = log_file, logging_name = 'downloader_logger') #该小说的log文件地址
+        self.logger = logger
+        self.proxies = proxies
     #进行下载和更新, 最后返回该小说的当前的章节数目，方便下次从该章节更新
     def update(self):
-        html = http_util.get_html(self.url)
+        html = http_util.get_html(self.url,self.proxies)
         bs = BeautifulSoup(html,'lxml')
         div = bs.find(id='list')
         index = 0
@@ -57,7 +56,7 @@ class downloader:
             for url in self.url_list:
                 time.sleep(2)
                 currenturl = url 
-                html = http_util.get_html(url)
+                html = http_util.get_html(url,self.proxies)
                 bs = BeautifulSoup(html, 'lxml')
                 title = bs.title
                 content = bs.find(id='content')

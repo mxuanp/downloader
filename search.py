@@ -17,7 +17,6 @@ import conf
 from bs4 import BeautifulSoup
 
 #my lib
-import http_util
 import html_str_util
 from pool import Pool
 

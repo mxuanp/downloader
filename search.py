@@ -24,9 +24,22 @@ from pool import Pool
 #global variabal
 search_url = 'https://www.xbiquge6.com/search.php?keyword='
 fictions = []
+
+#get html string
+def get_html(url):
+    pool = Pool()
+    proxies = pool.pool()
+    headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+    while True:
+        try:
+            req=requests.get(url,headers=headers, proxies = proxies, timeout=5)
+            req.encoding='UTF-8'
+            return html_str_util.filter_tags(req.text) 
+        except requests.exceptions.RequestException:
+            pass
 #search fiction in https://www.xbiquge6.com/search.php
 def search(filter):
-    html = http_util.get_html(search_url+filter)
+    html = get_html(search_url+filter)
     bs = BeautifulSoup(html, 'lxml')
     divs = bs.find_all('div', class_ = 'result-item')
     result_json = '['

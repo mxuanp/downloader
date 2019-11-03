@@ -52,7 +52,7 @@ def close_db(db,cursor):
 
 #下载或更新小说
 def update_fictions(fiction_list):
-    print(proxies)
+    print('proxies:'+proxies)
     for fiction in fiction_list:
         #每次需要重新设置download_logger的handler
         download_handler = get_handler(conf.log_dir + str(fiction[0]) + '.log')

@@ -27,7 +27,7 @@ class downloader:
         self.path = path #该小说在磁盘的存储地址
         self.fiction_id = fiction_id #该小说在数据库中的id
         self.url_list = [] #用于存储需要更新的章节的url
-        self.fic_list = collections.OrderedDict() #用于存储更新的章节的列表
+        self.fic_list = []#用于存储更新的章节的列表
         self.logger = logger
         self.proxies = proxies
     #进行下载和更新, 最后返回该小说的当前的章节数目，方便下次从该章节更新
@@ -43,7 +43,10 @@ class downloader:
                     index = index + 1
                     continue
                 self.url_list.append(self.url + child.get('href').split('/')[-1])
-                self.fic_list[str(index)] = str(child.get_text())
+                chapter = {}
+                chapter["id"] = index
+                chapter["title"] = str(child.get_text())
+                self.fic_list.append(chapter)
                 index = index + 1
         self.write_list()
         self.download_fiction()
@@ -76,12 +79,12 @@ class downloader:
         self.num = self.num + 1
     #把更新的小说列表写到文件
     def write_list(self):
-        fiction_list = {}
+        fiction_list = []
         try:
             with open(self.path+'/'+'list.json','r',encoding='utf-8') as f:
-                fiction_list=json.load(f, object_pairs_hook=collections.OrderedDict)
+                fiction_list=json.load(f)
                 #将上次的列表都出来和新的列表合并
-                fiction_list.update(self.fic_list)
+                fiction_list.extend(self.fic_list)
         except FileNotFoundError:
             #该小说还没有下载过，新创建列表文件
             fiction_list = self.fic_list

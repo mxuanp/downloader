@@ -154,8 +154,8 @@ if __name__ == '__main__':
     try:
         start()
         while True:
-            pool = pool.Pool()
-            proxies = pool.pool()
+            proxyPool = pool.Pool()
+            proxies = proxyPool.pool()
             logger.info("system is normal")
             time.sleep(86400)
     except Exception as e:
